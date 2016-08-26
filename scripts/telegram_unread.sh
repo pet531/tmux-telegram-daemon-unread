@@ -12,7 +12,6 @@ telegram_messages_unread_string="@telegram_messages_unread"
 print_telegram_unread() {
     local port=$(get_tmux_option "$telegram_daemon_port" "$telegram_daemon_default_port")
     local telegram_dialog_list="$(get_telegram_dialog_list)"
-
 	if [ -z "$telegram_dialog_list" ]; then
         local noDaemonMessageString=$(get_tmux_option "$telegram_no_daemon_message" "$telegram_default_no_daemon_message")
         local noDaemonMessage="${noDaemonMessageString//@port/$port}"
@@ -23,6 +22,7 @@ print_telegram_unread() {
         local telegram_messages_unread=$(get_unread_messages_count "$telegram_dialog_list")
         local dialogs_interpolated=${unreadMessageString/$telegram_dialogs_unread_string/$telegram_dialogs_unread}
         local messages_interpolated=${dialogs_interpolated/$telegram_messages_unread_string/$telegram_messages_unread}
+	echo "$telegram_messages_unread" > "$HOME/.tgunread"
         echo "$messages_interpolated"
     fi
 }
